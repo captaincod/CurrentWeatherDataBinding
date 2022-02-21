@@ -15,6 +15,22 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/editTextHint"
+            android:textSize="30sp"
+            android:inputType="text" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_onclick"
+            android:textSize="30sp"
+            android:onClick="onClick"
+            />
+
         <TextView
             android:textSize="30sp"
             android:layout_width="match_parent"
@@ -32,14 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{Double.toString(weather.main_temp)}"
-            android:background="@{ weather.main_temp > 1.0 ? Color.YELLOW : Color.BLUE }"
+            android:background="@{ weather.main_temp > 0.1 ? Color.YELLOW : Color.BLUE }"
             />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_onclick"
-            android:onClick="onClick"
-            />
+
 
     </LinearLayout>
 </layout>

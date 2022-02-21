@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather("City name", "Weather", 0.0)
 
@@ -28,14 +30,14 @@ class MainActivity : AppCompatActivity() {
          */
     }
     suspend fun loadWeather(): WeatherJSON {
+        val editText = findViewById<EditText>(R.id.editText)
+        val city = editText.text.toString()
         val apiKey: String = getString(R.string.apikey)
-        val city: String = "Karluk"
         val weatherURL =
             "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric"
         val stream = URL(weatherURL).content as InputStream
         // JSON отдаётся одной строкой,
         val data = Scanner(stream).nextLine()
-        Log.d("mytag", "old: $data")
         // TODO: предусмотреть обработку ошибок (нет сети, пустой ответ)
         val jsondata = data.trimIndent()
         val newdata: WeatherJSON = Gson().fromJson<WeatherJSON>(jsondata, WeatherJSON::class.java)
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     @DelicateCoroutinesApi
     fun onClick(view: android.view.View) {
+
         // Используем IO-диспетчер вместо Main (основного потока)
         GlobalScope.launch (Dispatchers.IO) {
             val weatherData: WeatherJSON = loadWeather()
