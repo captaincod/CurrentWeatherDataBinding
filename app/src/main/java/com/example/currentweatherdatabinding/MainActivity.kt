@@ -1,10 +1,12 @@
 package com.example.currentweatherdatabinding
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
+import android.view.ViewParent
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
 import com.google.gson.Gson
@@ -19,15 +21,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather("City name", "Weather", 0.0)
+        val test= resources.getStringArray(R.array.test)
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        if (spinner != null) {
+            val adapter = ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, test)
+            spinner.adapter = adapter}
+
+
+
 
         /*
         TODO: реализовать отображение погоды в текстовых полях и картинках
         картинками отобразить облачность и направление ветра
         использовать data binding, библиотеки уже подключены
          */
+
     }
     suspend fun loadWeather(): WeatherJSON {
         val editText = findViewById<EditText>(R.id.editText)

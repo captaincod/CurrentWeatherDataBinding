@@ -47,9 +47,14 @@
             android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{Double.toString(weather.main_temp)}"
+            android:text="@{`` + weather.main_temp}"
             android:background="@{ weather.main_temp > 0.1 ? Color.YELLOW : Color.BLUE }"
             />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"/>
+
 
 
     </LinearLayout>
