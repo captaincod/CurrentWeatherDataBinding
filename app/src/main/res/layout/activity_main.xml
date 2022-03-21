@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="weather"
@@ -7,12 +9,9 @@
         <import type="android.graphics.Color" />
         <import type="android.view.View" />
     </data>
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".MainActivity">
 
         <EditText
@@ -21,7 +20,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/editTextHint"
             android:textSize="30sp"
-            android:inputType="text" />
+            android:inputType="text"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <Button
             android:layout_width="match_parent"
@@ -29,6 +30,8 @@
             android:text="@string/button_onclick"
             android:textSize="30sp"
             android:onClick="onClick"
+            android:id="@+id/update_button"
+            app:layout_constraintTop_toBottomOf="@id/editText"
             />
 
         <TextView
@@ -36,23 +39,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{weather.city_name}"
+            android:id="@+id/city_textview"
+            app:layout_constraintTop_toBottomOf="@id/update_button"
             />
         <TextView
             android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{weather.weather_main}"
+            android:id="@+id/weather_textview"
+            app:layout_constraintTop_toBottomOf="@id/city_textview"
             />
         <TextView
             android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{weather.main_temp}"
+            android:id="@+id/temp_textview"
+            app:layout_constraintTop_toBottomOf="@id/weather_textview"
             />
 
+        <ImageView
+            android:id="@+id/icon_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/temp_textview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
 <!--android:visibility="@{ player.rating > 10 ? View.VISIBLE : View.INVISIBLE }"-->

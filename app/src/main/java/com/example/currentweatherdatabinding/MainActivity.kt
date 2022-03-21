@@ -1,11 +1,8 @@
 package com.example.currentweatherdatabinding
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewParent
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import com.example.currentweatherdatabinding.databinding.ActivityMainBinding
@@ -17,12 +14,14 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    lateinit var icon_view: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather("City name", "Weather", "Temperature")
+        icon_view = findViewById(R.id.icon_imageview)
 
         /*
         TODO: реализовать отображение погоды в текстовых полях и картинках
@@ -58,6 +57,9 @@ class MainActivity : AppCompatActivity() {
             val mainTemp: String = weatherData.main.temp
             Log.d("mytag", "cityName: $cityName, weatherMain: $weatherMain, mainTemp: $mainTemp")
             binding.weather = Weather(cityName, weatherMain, mainTemp)
+            val icon: String = weatherData.weather[0].icon
+            val iconURL = "http://openweathermap.org/img/wn/$icon@2x.png"
+            Log.d("mytag", "iconURL: $iconURL")
         }
     }
 
