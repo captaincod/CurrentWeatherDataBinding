@@ -47,13 +47,8 @@
             android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`` + weather.main_temp}"
-            android:background="@{ weather.main_temp > 0.1 ? Color.YELLOW : Color.BLUE }"
+            android:text="@{weather.main_temp}"
             />
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner"/>
 
 
 

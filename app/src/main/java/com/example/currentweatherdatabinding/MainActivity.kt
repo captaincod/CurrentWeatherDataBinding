@@ -22,16 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.weather = Weather("City name", "Weather", 0.0)
-        val test= resources.getStringArray(R.array.test)
-        val spinner = findViewById<Spinner>(R.id.spinner)
-        if (spinner != null) {
-            val adapter = ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, test)
-            spinner.adapter = adapter}
-
-
-
+        binding.weather = Weather("City name", "Weather", "Temperature")
 
         /*
         TODO: реализовать отображение погоды в текстовых полях и картинках
@@ -64,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             val weatherData: WeatherJSON = loadWeather()
             val cityName: String = weatherData.name
             val weatherMain: String = weatherData.weather[0].main
-            val mainTemp: Double = weatherData.main.temp
+            val mainTemp: String = weatherData.main.temp
             Log.d("mytag", "cityName: $cityName, weatherMain: $weatherMain, mainTemp: $mainTemp")
             binding.weather = Weather(cityName, weatherMain, mainTemp)
         }
@@ -72,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-data class Weather(val city_name: String, val weather_main: String, var main_temp: Double)
+data class Weather(val city_name: String, val weather_main: String, var main_temp: String)
 
 data class WeatherJSON(val coord: Coord, val weather: Array<WeatherArray>, val base: String,
                        val main: WeatherMain, val visibility: Long, val wind: WeatherWind,
@@ -81,9 +72,11 @@ data class WeatherJSON(val coord: Coord, val weather: Array<WeatherArray>, val b
 
 data class Coord(val lon: Double, val lat: Double)
 data class WeatherArray(val id: Int, val main: String, val description: String, val icon: String)
-data class WeatherMain(val temp: Double, val feels_like: Double,
+data class WeatherMain(val temp: String, val feels_like: Double,
                        val temp_min: Double, val temp_max: Double,
-                       val pressure: Int, val humidity: Int)
-data class WeatherWind(val speed: Int, val deg: Int)
+                       val pressure: Int, val humidity: Int,
+                       val gust: Double = 0.0, val sea_level: Int = 0, val grnd_level:Int = 0)
+data class WeatherWind(val speed: String, val deg: Int,
+                       val gust: Double = 0.0)
 data class WeatherClouds(val all: Int)
 data class WeatherSys(val type: Int, val id: Int, val country: String, val sunrise: Long, val sunset: Long)
