@@ -37,7 +37,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // coroutines support
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"

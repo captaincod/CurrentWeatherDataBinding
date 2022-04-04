@@ -1,5 +1,6 @@
 package com.example.currentweatherdatabinding
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,12 @@ import kotlinx.coroutines.*
 import java.io.InputStream
 import java.net.URL
 import java.util.*
+import android.widget.EditText
+import android.widget.ImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -21,45 +28,65 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather("City name", "Weather", "Temperature")
-        icon_view = findViewById(R.id.icon_imageview)
-
-        /*
-        TODO: реализовать отображение погоды в текстовых полях и картинках
-        картинками отобразить облачность и направление ветра
-        использовать data binding, библиотеки уже подключены
-         */
-
+        icon_view = findViewById(R.id.icon_view)
     }
-    suspend fun loadWeather(): WeatherJSON {
+
+    fun loadWeather() {
         val editText = findViewById<EditText>(R.id.editText)
         val city = editText.text.toString()
         val apiKey: String = getString(R.string.apikey)
         val weatherURL =
             "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric"
-        val stream = URL(weatherURL).content as InputStream
-        // JSON отдаётся одной строкой,
-        val data = Scanner(stream).nextLine()
-        // TODO: предусмотреть обработку ошибок (нет сети, пустой ответ)
-        val jsondata = data.trimIndent()
-        val newdata: WeatherJSON = Gson().fromJson<WeatherJSON>(jsondata, WeatherJSON::class.java)
-        Log.d("mytag", "data: $newdata")
-        return newdata
+        lateinit var cityName: String
+        lateinit var weatherMain: String
+        lateinit var mainTemp: String
+        lateinit var icon: String
+
+        try{
+            val stream = URL(weatherURL).content as InputStream
+            val data = Scanner(stream).nextLine()
+            val jsondata = data.trimIndent()
+            val weatherData: WeatherJSON = Gson().fromJson<WeatherJSON>(jsondata, WeatherJSON::class.java)
+            Log.d("mytag", "data: $weatherData")
+            cityName = weatherData.name
+            weatherMain = weatherData.weather[0].main
+            mainTemp = weatherData.main.temp
+            icon = weatherData.weather[0].icon
+            binding.weather = Weather(cityName, weatherMain, mainTemp)
+            Log.d("mytag", icon)
+            this@MainActivity.runOnUiThread {
+                when(icon){
+                    "01d" -> icon_view.setImageResource(R.drawable.icon01d)
+                    "02d" -> icon_view.setImageResource(R.drawable.icon02d)
+                    "03d" -> icon_view.setImageResource(R.drawable.icon03d)
+                    "04d" -> icon_view.setImageResource(R.drawable.icon04d)
+                    "09d" -> icon_view.setImageResource(R.drawable.icon09d)
+                    "10d" -> icon_view.setImageResource(R.drawable.icon10d)
+                    "11d" -> icon_view.setImageResource(R.drawable.icon11d)
+                    "13d" -> icon_view.setImageResource(R.drawable.icon13d)
+                    "50d" -> icon_view.setImageResource(R.drawable.icon50d)
+                    "01n" -> icon_view.setImageResource(R.drawable.icon01n)
+                    "02n" -> icon_view.setImageResource(R.drawable.icon02n)
+                    "03n" -> icon_view.setImageResource(R.drawable.icon03n)
+                    "04n" -> icon_view.setImageResource(R.drawable.icon04n)
+                    "09n" -> icon_view.setImageResource(R.drawable.icon09n)
+                    "10n" -> icon_view.setImageResource(R.drawable.icon10n)
+                    "11n" -> icon_view.setImageResource(R.drawable.icon11n)
+                    "13n" -> icon_view.setImageResource(R.drawable.icon13n)
+                    "50n" -> icon_view.setImageResource(R.drawable.icon50n)
+                }
+            }
+        } catch (e: FileNotFoundException) {
+            this@MainActivity.runOnUiThread {
+                Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @DelicateCoroutinesApi
     fun onClick(view: android.view.View) {
-
-        // Используем IO-диспетчер вместо Main (основного потока)
         GlobalScope.launch (Dispatchers.IO) {
-            val weatherData: WeatherJSON = loadWeather()
-            val cityName: String = weatherData.name
-            val weatherMain: String = weatherData.weather[0].main
-            val mainTemp: String = weatherData.main.temp
-            Log.d("mytag", "cityName: $cityName, weatherMain: $weatherMain, mainTemp: $mainTemp")
-            binding.weather = Weather(cityName, weatherMain, mainTemp)
-            val icon: String = weatherData.weather[0].icon
-            val iconURL = "http://openweathermap.org/img/wn/$icon@2x.png"
-            Log.d("mytag", "iconURL: $iconURL")
+            loadWeather()
         }
     }
 
