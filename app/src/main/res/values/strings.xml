@@ -3,4 +3,6 @@
     <string name="apikey">6a70852e18d3ce404b5e2fc592fe9b28</string>
     <string name="button_onclick">Update</string>
     <string name="editTextHint">Input city name</string>
+    <string name="icons_only">Icons only</string>
+    <string name="text_only">Text only</string>
 </resources>

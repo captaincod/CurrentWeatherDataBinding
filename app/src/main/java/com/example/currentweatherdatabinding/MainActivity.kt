@@ -18,17 +18,57 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var fm: FragmentManager
+    lateinit var ft: FragmentTransaction
+    lateinit var fr1: Fragment
+    lateinit var fr2: Fragment
+    lateinit var toIconFragment: Button
+    lateinit var toTextFragment: Button
+
     lateinit var binding: ActivityMainBinding
     lateinit var icon_view: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.weather = Weather("City name", "Weather", "Temperature")
         icon_view = findViewById(R.id.icon_view)
+
+        fm = supportFragmentManager
+        ft = fm.beginTransaction()
+        fr2 = TextFragment()
+
+
+        val fr = fm.findFragmentById(R.id.container_fragm)
+        if (fr == null) {
+            fr1 = IconFragment()
+            fm.beginTransaction().add(R.id.container_fragm, fr1)
+                .commit()
+        } else
+            fr1 = fr
+
+        toIconFragment = findViewById(R.id.fragmentIcon)
+        toTextFragment = findViewById(R.id.fragmentText)
+
+        toTextFragment.setOnClickListener {
+
+            val ft = fm.beginTransaction()
+            ft.replace(R.id.container_fragm, fr2)
+            ft.commit() }
+
+        toIconFragment.setOnClickListener {
+            val ft = fm.beginTransaction()
+            ft.replace(R.id.container_fragm, fr1)
+            ft.commit() }
+
     }
 
     fun loadWeather() {
@@ -75,7 +115,9 @@ class MainActivity : AppCompatActivity() {
                     "13n" -> icon_view.setImageResource(R.drawable.icon13n)
                     "50n" -> icon_view.setImageResource(R.drawable.icon50n)
                 }
+                
             }
+
         } catch (e: FileNotFoundException) {
             this@MainActivity.runOnUiThread {
                 Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show()

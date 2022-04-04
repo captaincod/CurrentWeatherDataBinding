@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidStudioProjects/CurrentWeatherDataBinding/app/src/main/res/layout/activity_main.xml" value="0.22241529105125976" />
+        <entry key="..\:/AndroidStudioProjects/CurrentWeatherDataBinding/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/AndroidStudioProjects/CurrentWeatherDataBinding/app/src/main/res/layout/fragment_icon.xml" value="0.14479166666666668" />
+        <entry key="..\:/AndroidStudioProjects/CurrentWeatherDataBinding/app/src/main/res/layout/fragment_text.xml" value="0.14479166666666668" />
       </map>
     </option>
   </component>
